@@ -13,6 +13,7 @@ Makefile
 *.su
 
 # IDE and OS specific files
+hw_*/.vscode/*
 .vscode/*
 !.vscode/
 !.vscode/extensions.json
