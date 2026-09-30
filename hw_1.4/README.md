@@ -1,10 +1,9 @@
 # hw_1.4
 
-два LED i двi кнопки.
+2 світлодіоди і 2 кнопки.
 
-- GPIO 15, 16 - LED через 220 Ом
-- GPIO 21 - зовнiшня кнопка, INPUT_PULLUP
-- GPIO 0 - BOOT, INPUT
+gpio 15/16 - led
+gpio 21 - кнопка
+gpio 0 - boot
 
-Mode::Fast - обидва LED разом, 200 мс
-Mode::Slow - по черзi, 1000 мс
+fast 200мс разом, slow 1000мс по черзі
