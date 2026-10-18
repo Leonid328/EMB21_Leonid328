@@ -1,0 +1,7 @@
+build/
+.pio/
+*.o
+*.elf
+*.bin
+*.hex
+.vscode/
