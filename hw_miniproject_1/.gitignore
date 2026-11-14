@@ -1,3 +1,4 @@
+# Build directories and generated files
 build/
 .pio/
 CMakeCache.txt
@@ -10,8 +11,6 @@ Makefile
 *.hex
 *.map
 *.su
+
+# IDE and OS specific files
 .vscode/
-sdkconfig
-sdkconfig.old
-managed_components/
-dependencies.lock
