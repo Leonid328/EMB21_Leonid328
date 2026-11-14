@@ -1,0 +1,3 @@
+hw_miniproject_7
+raw=1200 mv=980 sma=976
+deg=54 us=1080 duty=221
