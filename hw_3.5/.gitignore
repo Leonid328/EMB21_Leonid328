@@ -1,0 +1,17 @@
+build/
+.pio/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+*.cmake
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.su
+.vscode/
+sdkconfig
+sdkconfig.old
+managed_components/
+dependencies.lock
