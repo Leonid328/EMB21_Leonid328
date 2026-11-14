@@ -1,0 +1,79 @@
+name: Embedded CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  format-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install clang-format and clang-tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
+
+      - name: Run clang-format check
+        run: |
+          find . -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs clang-format --Werror --dry-run
+        continue-on-error: true # Set to false if you want strict format enforcement
+
+      # You can uncomment this if you want clang-tidy to run, but it usually requires compile_commands.json
+      # - name: Run clang-tidy
+      #   run: |
+      #     find . -name "*.c" -o -name "*.cpp" | xargs clang-tidy -p .
+
+  build-project:
+    runs-on: ubuntu-latest
+    if: github.head_ref != 'main' && github.head_ref != 'master' && github.ref_name != 'main' && github.ref_name != 'master'
+    env:
+      PROJECT_DIR: ${{ github.head_ref || github.ref_name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check if folder matches branch name
+        run: |
+          if [ ! -d "${{ env.PROJECT_DIR }}" ]; then
+            echo "::error::Directory '${{ env.PROJECT_DIR }}' does not exist! Branch name MUST match the homework folder name exactly."
+            exit 1
+          fi
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # --- 1. PlatformIO ---
+      - name: Install PlatformIO
+        if: hashFiles(format('{0}/platformio.ini', env.PROJECT_DIR)) != ''
+        run: pip install -U platformio
+
+      - name: Build PlatformIO
+        if: hashFiles(format('{0}/platformio.ini', env.PROJECT_DIR)) != ''
+        run: pio run -d ${{ env.PROJECT_DIR }}
+
+      # --- 2. ESP-IDF (CMake) ---
+      - name: Build ESP-IDF (CMake)
+        if: hashFiles(format('{0}/platformio.ini', env.PROJECT_DIR)) == '' && hashFiles(format('{0}/CMakeLists.txt', env.PROJECT_DIR)) != ''
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          path: ${{ env.PROJECT_DIR }}
+          target: esp32s3
+
+      # --- 3. STM32 CubeMX (Makefile) ---
+      - name: Install ARM GCC Toolchain (for Makefile)
+        if: hashFiles(format('{0}/platformio.ini', env.PROJECT_DIR)) == '' && hashFiles(format('{0}/CMakeLists.txt', env.PROJECT_DIR)) == '' && hashFiles(format('{0}/Makefile', env.PROJECT_DIR)) != ''
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+
+      - name: Build Makefile (STM32 CubeMX)
+        if: hashFiles(format('{0}/platformio.ini', env.PROJECT_DIR)) == '' && hashFiles(format('{0}/CMakeLists.txt', env.PROJECT_DIR)) == '' && hashFiles(format('{0}/Makefile', env.PROJECT_DIR)) != ''
+        run: make -C ${{ env.PROJECT_DIR }}
+

@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "Jason2866.esp-decoder",
+        "eamodio.gitlens",
+        "espressif.esp-idf-extension",
+        "ms-vscode.cpptools",
+        "pioarduino.pioarduino-ide",
+        "platformio.platformio-ide",
+        "stmicroelectronics.stm32cubeide",
+        "twxs.cmake",
+        "xaver.clang-format"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.cpptools-extension-pack"
+    ]
+}
