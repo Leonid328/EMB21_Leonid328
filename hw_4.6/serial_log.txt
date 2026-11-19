@@ -1,0 +1,5 @@
+hw_4.6 ADC-DMA + UART-DMA  GPIO4/ADC1_CH3
+turn the pot; lines are DMA-TX
+raw=1024 V= 825 mV | Vmin= 820 Vmax= 831 Vpp=  11 Vavg= 826 n=64
+raw=2048 V=1650 mV | Vmin=1642 Vmax=1658 Vpp=  16 Vavg=1651 n=64
+raw=3072 V=2475 mV | Vmin=2468 Vmax=2482 Vpp=  14 Vavg=2474 n=64
