@@ -1,0 +1,5 @@
+hw_4.7 STM32F411CEU6 Black Pill
+LED PC13 blinks with equal on/off (default 250 ms half-period).
+PA0 press: 100 -> 250 -> 500 -> 1000 ms -> wrap.
+SWD: ST-Link, breakpoint nextPeriod / watch g_half_ms.
+No HAL in blink path.
